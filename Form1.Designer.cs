@@ -42,8 +42,6 @@
             webView21.Size = new Size(776, 426);
             webView21.TabIndex = 0;
             webView21.ZoomFactor = 1D;
-            webView21.KeyDown += webView21_KeyDown;
-            webView21.PreviewKeyDown += webView21_PreviewKeyDown;
             // 
             // Form1
             // 
