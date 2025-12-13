@@ -14,17 +14,10 @@
             Bounds = Screen.PrimaryScreen.Bounds;
 
             // Initialize WebView2
-            InitializeWebViewAsync();
 
             webView21.Dock = DockStyle.Fill; // Fill the form
 
-            webView21.KeyDown += (s, e) =>
-            {
-                if (e.KeyCode == Keys.Escape)
-                {
-                    Application.Exit();
-                }
-            };
+            InitializeWebViewAsync();
         }
 
         private async void InitializeWebViewAsync()
@@ -52,6 +45,16 @@
             {
                 // Already full screen, but you can add extra logic if needed
             };
+        }
+
+        private void webView21_KeyDown(object sender, KeyEventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void webView21_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            Application.Exit();
         }
     }
 }
