@@ -27,32 +27,25 @@
             };
         }
 
-        private void webView21_Click(object sender, EventArgs e)
-        {
-        }
-
         private async void InitializeWebViewAsync()
         {
             await webView21.EnsureCoreWebView2Async(null);
 
-            var html = Path.Combine(
-                AppDomain.CurrentDomain.BaseDirectory,
-                "Assets",
-                "matrix.html"
-            );
+            // Read HTML from embedded resource
+            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            var resourceName = "WinFormsAppMM.assets.matrix.html";
 
-            //var uri = new Uri(html).AbsoluteUri;
-
-            //// Load a remote URL
-            //webView21.Source = new Uri(html);
-
-            // OR load a local HTML file
-            // Add your index.html to the project:
-            // - Right-click project → Add → Existing Item → select file
-            // - Set Build Action: Content
-            // - Set Copy to Output Directory: Copy if newer
-            string localPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "assets", "matrix.html");
-            webView21.Source = new Uri(localPath);
+            using (var stream = assembly.GetManifestResourceStream(resourceName))
+            {
+                if (stream != null)
+                {
+                    using (var reader = new StreamReader(stream))
+                    {
+                        var htmlContent = await reader.ReadToEndAsync();
+                        webView21.NavigateToString(htmlContent);
+                    }
+                }
+            }
 
             // Optional: Handle full-screen video in page
             webView21.CoreWebView2.ContainsFullScreenElementChanged += (sender, args) =>

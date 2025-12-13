@@ -9,13 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="assets\matrix.html" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="assets\matrix.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <EmbeddedResource Include="assets\matrix.html" />
   </ItemGroup>
 
   <ItemGroup>
