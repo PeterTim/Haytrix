@@ -1,65 +1,69 @@
 ﻿<!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <title>Matrix Screensaver</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-      background: black;
-      overflow: hidden;
-      cursor: none; /* прячем курсор */
-      font-family: monospace;
-    }
-    canvas { display: block; }
-  </style>
+    <meta charset="UTF-8" />
+    <title>Matrix Screensaver</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+            overflow: hidden;
+            cursor: none; /* прячем курсор */
+            font-family: monospace;
+        }
+
+        canvas {
+            display: block;
+        }
+    </style>
 </head>
 <body>
-<canvas id="matrix"></canvas>
-<script>
-  const canvas = document.getElementById('matrix');
-  const ctx = canvas.getContext('2d');
+    <canvas id="matrix"></canvas>
+    <script>
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
 
-  function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-  window.addEventListener('resize', resize);
-  resize();
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
 
-    const chars = 'ԱԲԳԴԵԶԷԸԹԺԻԼԽԾԿՀՁՂՃՄՅՆՇՈՉՊՋՌՍՎՏՐՑՒՓՔՕՖ0123456789';
-  const charArray = chars.split('');
-  const fontSize = 16;
-  let columns = Math.floor(canvas.width / fontSize);
-  let drops = Array(columns).fill(1);
+        window.addEventListener('resize', resize);
+        resize();
 
-  function draw() {
-    ctx.fillStyle = 'rgba(0,0,0,0.05)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+        const chars = 'ԱԲԳԴԵԶԷԸԹԺԻԼԽԾԿՀՁՂՃՄՅՆՇՈՉՊՋՌՍՎՏՐՑՒՓՔՕՖ0123456789';
+        const charArray = chars.split('');
+        const fontSize = 19;
+        let columns = Math.floor(canvas.width / fontSize);
+        let drops = Array(columns).fill(1);
 
-    ctx.fillStyle = '#0F0';
-    ctx.font = fontSize + 'px monospace';
+        function draw() {
+            ctx.fillStyle = 'rgba(0,0,0,0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    for (let i = 0; i < drops.length; i++) {
-      const text = charArray[Math.floor(Math.random() * charArray.length)];
-      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-      if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-        drops[i] = 0;
-      }
-      drops[i]++;
-    }
-  }
+            ctx.fillStyle = '#0F0';
+            ctx.font = fontSize + 'px monospace';
 
-  setInterval(draw, 46);
+            for (let i = 0; i < drops.length; i++) {
+                const text = charArray[Math.floor(Math.random() * charArray.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
 
-  // закрытие по любому вводу (для screensaver)
-//  ['mousemove','mousedown','keydown','touchstart'].forEach(e =>
-//    window.addEventListener(e, () => window.close())
-//  );
-</script>
+        setInterval(draw, 70);
+
+        // закрытие по любому вводу (для screensaver)
+        //  ['mousemove','mousedown','keydown','touchstart'].forEach(e =>
+        //    window.addEventListener(e, () => window.close())
+        //  );
+    </script>
 </body>
 </html>
