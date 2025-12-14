@@ -17,19 +17,34 @@
 
             webView21.Dock = DockStyle.Fill; // Fill the form
 
-            // Exit on any key press (Form level)
-            this.KeyPreview = true;
-            this.KeyDown += (s, e) => Application.Exit();
-
-            // Exit on any key press (WebView2 level)
-            webView21.PreviewKeyDown += webView21_PreviewKeyDown;
-
             InitializeWebViewAsync();
         }
 
         private async void InitializeWebViewAsync()
         {
             await webView21.EnsureCoreWebView2Async(null);
+
+            // Capture keyboard events from WebView2 to exit on any key
+            webView21.CoreWebView2.Settings.AreDefaultScriptDialogsEnabled = true;
+            webView21.CoreWebView2.Settings.IsScriptEnabled = true;
+
+            // Inject script to capture all keyboard events and send message to host
+            await webView21.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync(@"
+                document.addEventListener('keydown', function(e) {
+                    window.chrome.webview.postMessage('exit');
+                }, true);
+
+              
+            ");
+
+            // Listen for messages from WebView2
+            webView21.CoreWebView2.WebMessageReceived += (sender, args) =>
+            {
+                if (args.TryGetWebMessageAsString() == "exit")
+                {
+                    Application.Exit();
+                }
+            };
 
             // Read HTML from embedded resource
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
@@ -52,11 +67,6 @@
             {
                 // Already full screen, but you can add extra logic if needed
             };
-        }
-
-        private void webView21_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
-        {
-            Application.Exit();
         }
     }
 }
