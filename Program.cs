@@ -1,4 +1,4 @@
-namespace WinFormsAppMM
+namespace MatrixScreenSaver
 {
     internal static class Program
     {
