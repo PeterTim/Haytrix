@@ -1,3 +1,5 @@
 .vs
 bin
 obj
+/MatrixScreenSaver.scr.WebView2/EBWebView
+/MatrixScreenSaver.scr
