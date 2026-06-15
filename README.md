@@ -1,5 +1,7 @@
 # Haytrix Screen Saver
 
+<img width="1176" height="732" alt="image" src="https://github.com/user-attachments/assets/331d2da1-fc4c-4b82-9e7d-9ee007b7d2f9" />
+
 A Matrix-style screensaver built with .NET 9 WinForms + WebView2. Features falling characters from the Armenian alphabet instead of the classic Japanese katakana.
 
 ## Requirements
