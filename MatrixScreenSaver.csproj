@@ -5,6 +5,11 @@
     <TargetFramework>net9.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
+    <!-- WebView2 ships a WPF control (Microsoft.Web.WebView2.Wpf.dll) that references the full
+         WPF WindowsBase. Enabling WPF brings in that reference assembly and resolves the
+         "conflicts between different versions of WindowsBase" error. The Windows Desktop runtime
+         already includes WPF, so this adds no extra runtime dependency. -->
+    <UseWPF>true</UseWPF>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 

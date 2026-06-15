@@ -1,39 +1,41 @@
-﻿using Microsoft.Web.WebView2.Core;
+﻿namespace MatrixScreenSaver;
 
-namespace MatrixScreenSaver
+using System.IO;
+
+using Microsoft.Web.WebView2.Core;
+
+public partial class Form1 : Form
 {
-    public partial class Form1 : Form
+    public Form1()
     {
-        public Form1()
-        {
-            InitializeComponent();
+        InitializeComponent();
 
-            FormBorderStyle = FormBorderStyle.None;     // No border/title bar
-            WindowState = FormWindowState.Maximized;    // Maximized (covers taskbar on most setups)
-            TopMost = true;                             // Stay on top
+        FormBorderStyle = FormBorderStyle.None;     // No border/title bar
+        WindowState = FormWindowState.Maximized;    // Maximized (covers taskbar on most setups)
+        TopMost = true;                             // Stay on top
 
-            // For true kiosk (cover taskbar completely)
-            Bounds = Screen.PrimaryScreen.Bounds;
+        // For true kiosk (cover taskbar completely)
+        Bounds = Screen.PrimaryScreen?.Bounds ?? new Rectangle(0, 0, 800, 600);
 
-            // Initialize WebView2
+        // Initialize WebView2
 
-            webView21.Dock = DockStyle.Fill; // Fill the form
+        webView21.Dock = DockStyle.Fill; // Fill the form
 
-            InitializeWebViewAsync();
-        }
+        InitializeWebViewAsync();
+    }
 
-        private async void InitializeWebViewAsync()
-        {
-            var userDataFolder = Path.Combine(Path.GetTempPath(), "MatrixScreenSaverWebView2");
-            var env = await CoreWebView2Environment.CreateAsync(null, userDataFolder);
-            await webView21.EnsureCoreWebView2Async(env);
+    private async void InitializeWebViewAsync()
+    {
+        var userDataFolder = Path.Combine(Path.GetTempPath(), "MatrixScreenSaverWebView2");
+        var env = await CoreWebView2Environment.CreateAsync(null, userDataFolder);
+        await webView21.EnsureCoreWebView2Async(env);
 
-            // Capture keyboard events from WebView2 to exit on any key
-            webView21.CoreWebView2.Settings.AreDefaultScriptDialogsEnabled = true;
-            webView21.CoreWebView2.Settings.IsScriptEnabled = true;
+        // Capture keyboard events from WebView2 to exit on any key
+        webView21.CoreWebView2.Settings.AreDefaultScriptDialogsEnabled = true;
+        webView21.CoreWebView2.Settings.IsScriptEnabled = true;
 
-            // Inject script to exit on any keyboard or (significant) mouse activity.
-            await webView21.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync(@"
+        // Inject script to exit on any keyboard or (significant) mouse activity.
+        await webView21.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync(@"
                 (function () {
                     var origin = null;
                     function exit() { window.chrome.webview.postMessage('exit'); }
@@ -49,36 +51,32 @@ namespace MatrixScreenSaver
                 })();
             ");
 
-            // Listen for messages from WebView2
-            webView21.CoreWebView2.WebMessageReceived += (sender, args) =>
+        // Listen for messages from WebView2
+        webView21.CoreWebView2.WebMessageReceived += (sender, args) =>
+        {
+            if (args.TryGetWebMessageAsString() == "exit")
             {
-                if (args.TryGetWebMessageAsString() == "exit")
-                {
-                    Application.Exit();
-                }
-            };
-
-            // Read HTML from embedded resource
-            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
-            var resourceName = "MatrixScreenSaver.assets.matrix.html";
-
-            using (var stream = assembly.GetManifestResourceStream(resourceName))
-            {
-                if (stream != null)
-                {
-                    using (var reader = new StreamReader(stream))
-                    {
-                        var htmlContent = await reader.ReadToEndAsync();
-                        webView21.NavigateToString(htmlContent);
-                    }
-                }
+                Application.Exit();
             }
+        };
 
-            // Optional: Handle full-screen video in page
-            webView21.CoreWebView2.ContainsFullScreenElementChanged += (sender, args) =>
-            {
-                // Already full screen, but you can add extra logic if needed
-            };
+        // Read HTML from embedded resource
+        var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+        var resourceName = "MatrixScreenSaver.assets.matrix.html";
+
+        using var stream = assembly.GetManifestResourceStream(resourceName);
+
+        if (stream != null)
+        {
+            using var reader = new StreamReader(stream);
+            var htmlContent = await reader.ReadToEndAsync();
+            webView21.NavigateToString(htmlContent);
         }
+
+        // Optional: Handle full-screen video in page
+        webView21.CoreWebView2.ContainsFullScreenElementChanged += (sender, args) =>
+        {
+            // Already full screen, but you can add extra logic if needed
+        };
     }
 }
