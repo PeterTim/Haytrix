@@ -1,7 +1,5 @@
 .vs
-bin
-obj
+.build
 /MatrixScreenSaver.scr.WebView2/EBWebView
 /MatrixScreenSaver.scr
-publish
 settings.local.json

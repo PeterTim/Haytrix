@@ -14,7 +14,7 @@ A Matrix-style screensaver built with .NET 9 WinForms + WebView2. Features falli
 dotnet publish MatrixScreenSaver.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o publish\
 ```
 
-The `publish\` folder will contain two required files:
+The `.build\publish\win-x64\` folder will contain two required files:
 
 | File | Purpose |
 |---|---|
@@ -28,8 +28,8 @@ The remaining files (`.pdb`, `.xml`, `runtimes\` folder) can be deleted.
 ### Step 1 — Copy files to System32
 
 ```powershell
-Copy-Item publish\MatrixScreenSaver.exe C:\Windows\System32\MatrixScreenSaver.scr -Force
-Copy-Item publish\WebView2Loader.dll    C:\Windows\System32\ -Force
+Copy-Item .build\publish\win-x64\MatrixScreenSaver.exe C:\Windows\System32\MatrixScreenSaver.scr -Force
+Copy-Item .build\publish\win-x64\WebView2Loader.dll    C:\Windows\System32\ -Force
 ```
 
 > The `.scr` extension is the Windows screensaver format. Both files must be in the same folder.
