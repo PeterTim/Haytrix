@@ -3,3 +3,5 @@ bin
 obj
 /MatrixScreenSaver.scr.WebView2/EBWebView
 /MatrixScreenSaver.scr
+publish
+settings.local.json

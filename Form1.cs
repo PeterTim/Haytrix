@@ -1,4 +1,6 @@
-﻿namespace MatrixScreenSaver
+﻿using Microsoft.Web.WebView2.Core;
+
+namespace MatrixScreenSaver
 {
     public partial class Form1 : Form
     {
@@ -22,7 +24,9 @@
 
         private async void InitializeWebViewAsync()
         {
-            await webView21.EnsureCoreWebView2Async(null);
+            var userDataFolder = Path.Combine(Path.GetTempPath(), "MatrixScreenSaverWebView2");
+            var env = await CoreWebView2Environment.CreateAsync(null, userDataFolder);
+            await webView21.EnsureCoreWebView2Async(env);
 
             // Capture keyboard events from WebView2 to exit on any key
             webView21.CoreWebView2.Settings.AreDefaultScriptDialogsEnabled = true;
