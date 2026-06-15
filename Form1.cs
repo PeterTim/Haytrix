@@ -28,13 +28,21 @@
             webView21.CoreWebView2.Settings.AreDefaultScriptDialogsEnabled = true;
             webView21.CoreWebView2.Settings.IsScriptEnabled = true;
 
-            // Inject script to capture all keyboard events and send message to host
+            // Inject script to exit on any keyboard or (significant) mouse activity.
             await webView21.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync(@"
-                document.addEventListener('keydown', function(e) {
-                    window.chrome.webview.postMessage('exit');
-                }, true);
-
-              
+                (function () {
+                    var origin = null;
+                    function exit() { window.chrome.webview.postMessage('exit'); }
+                    document.addEventListener('keydown', exit, true);
+                    document.addEventListener('mousedown', exit, true);
+                    document.addEventListener('wheel', exit, true);
+                    document.addEventListener('mousemove', function (e) {
+                        if (origin === null) { origin = { x: e.screenX, y: e.screenY }; return; }
+                        if (Math.abs(e.screenX - origin.x) > 10 || Math.abs(e.screenY - origin.y) > 10) {
+                            exit();
+                        }
+                    }, true);
+                })();
             ");
 
             // Listen for messages from WebView2
