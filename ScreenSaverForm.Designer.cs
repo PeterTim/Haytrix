@@ -1,7 +1,7 @@
-﻿namespace MatrixScreenSaver
+﻿namespace Haytrix
 {
 
-    partial class Form1
+    partial class ScreenSaverForm
     {
         /// <summary>
         ///  Required designer variable.

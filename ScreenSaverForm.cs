@@ -1,12 +1,12 @@
-﻿namespace MatrixScreenSaver;
+﻿namespace Haytrix;
 
 using System.IO;
 
 using Microsoft.Web.WebView2.Core;
 
-public partial class Form1 : Form
+public partial class ScreenSaverForm : Form
 {
-    public Form1()
+    public ScreenSaverForm()
     {
         InitializeComponent();
 
@@ -26,7 +26,7 @@ public partial class Form1 : Form
 
     private async void InitializeWebViewAsync()
     {
-        var userDataFolder = Path.Combine(Path.GetTempPath(), "MatrixScreenSaverWebView2");
+        var userDataFolder = Path.Combine(Path.GetTempPath(), "HaytrixWebView2");
         var env = await CoreWebView2Environment.CreateAsync(null, userDataFolder);
         await webView21.EnsureCoreWebView2Async(env);
 
@@ -62,7 +62,7 @@ public partial class Form1 : Form
 
         // Read HTML from embedded resource
         var assembly = System.Reflection.Assembly.GetExecutingAssembly();
-        var resourceName = "MatrixScreenSaver.assets.matrix.html";
+        var resourceName = "Haytrix.assets.matrix.html";
 
         using var stream = assembly.GetManifestResourceStream(resourceName);
 
