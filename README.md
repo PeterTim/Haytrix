@@ -11,7 +11,7 @@ A Matrix-style screensaver built with .NET 9 WinForms + WebView2. Features falli
 ## Build (Publish)
 
 ```powershell
-dotnet publish Haytrix.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o publish\
+dotnet publish src\Haytrix.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -o publish\
 ```
 
 The `.build\publish\win-x64\` folder will contain two required files:
